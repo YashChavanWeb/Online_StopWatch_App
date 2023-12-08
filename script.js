@@ -32,7 +32,7 @@ function toggleStart() {
 // Function to start the stopwatch
 function startStopwatch() {
     isRunning = true;
-    
+
     // Set the start time either from scratch or based on paused time
     if (pausedTime === 0) {
         startTime = Date.now();
@@ -40,11 +40,8 @@ function startStopwatch() {
         startTime = Date.now() - pausedTime;
         pausedTime = 0; // Reset paused time
     }
-    
     // Update button text and show necessary buttons
     startButton.textContent = 'Pause';
-    resetButton.classList.remove('dont-show');
-    lapsButton.classList.remove('dont-show');
     updateStopwatch();
 }
 
@@ -53,8 +50,6 @@ function pauseStopwatch() {
     isRunning = false;
     pausedTime += Date.now() - startTime;
     startButton.textContent = 'Resume';
-    resetButton.classList.remove('dont-show');
-    lapsButton.classList.remove('dont-show');
 }
 
 // Function to resume the stopwatch
@@ -64,21 +59,10 @@ function resumeStopwatch() {
         startTime = Date.now() - (pausedTime || 0); // Use pausedTime if it's not zero
         pausedTime = 0; // Reset paused time
         startButton.textContent = 'Pause';
-        resetButton.classList.remove('dont-show');
-        lapsButton.classList.remove('dont-show');
         updateStopwatch();
     }
 }
 
-// Function to stop the stopwatch
-function stopStopwatch() {
-    isRunning = false;
-    pausedTime = 0; // Reset paused time
-    startButton.textContent = 'Start';
-    resetButton.classList.add('dont-show');
-    lapsButton.classList.add('dont-show');
-    recordLap();
-}
 
 // Function to update the stopwatch display
 function updateStopwatch() {
@@ -103,6 +87,26 @@ function formatTime(time) {
     };
 }
 
+
+// -------------- Demonstration -------------------
+
+/* const minutes = Math.floor(123456 / (60 * 1000)); */
+// minutes = Math.floor(2.0586);
+// minutes = 2 (after rounding down)
+
+/* const seconds = Math.floor((123456 % (60 * 1000)) / 1000); */
+// seconds = Math.floor(3456 / 1000);
+// seconds = Math.floor(3.456);
+// seconds = 3 (after rounding down)
+
+
+/* const miliseconds = Math.floor((123456 % 1000) / 10); */
+// miliseconds = Math.floor(456 / 10);
+// miliseconds = Math.floor(45.6);
+// miliseconds = 45 (after rounding down)
+
+
+
 // Function to display the formatted time
 function displayTime({ minutes, seconds, miliseconds }) {
     minutesElement.textContent = `${minutes}:`;
@@ -115,8 +119,6 @@ function resetStopwatch() {
     isRunning = false;
     pausedTime = 0; // Reset paused time
     startButton.textContent = 'Start';
-    resetButton.classList.add('dont-show');
-    lapsButton.classList.add('dont-show');
     displayTime({ minutes: '00', seconds: '00', miliseconds: '00' });
     lapNumber = 1;
     clearAllLaps();
@@ -130,7 +132,7 @@ function recordLap() {
         lapItem.classList.add('lap-stops', 'block');
         lapItem.innerHTML = `<span class="rank">${lapNumber++}) </span>
                              <span class="value">${lapTime.minutes}:${lapTime.seconds}:${lapTime.miliseconds}</span>`;
-        
+
         // Append new lap item at the end of the lapsContainer
         lapsContainer.appendChild(lapItem);
     }
